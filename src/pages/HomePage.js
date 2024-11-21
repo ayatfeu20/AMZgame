@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import Footer from "../components/Footer"
 import "./HomePage.css"; // Import CSS for styling
 
 import puzzleIcon from "./images/puzzleicon.png"; // Add your game icons here
@@ -18,13 +19,20 @@ const HomePage = () => {
   const navigate = useNavigate();
   const MySwal = withReactContent(Swal);
 
+  const lionSound = new Audio('/lion.mp3');
+
   const handleEnter = () => {
     if (name && selectedGame) {
+      lionSound.play();
+      setTimeout(() => {
+        lionSound.pause();
+      }, 3000); // 3 minutes
+  
       setLoading(true); // Show the loading animation
       setTimeout(() => {
         navigate(`/${selectedGame}`, { state: { name } });
         setLoading(false); // Hide the loading animation after navigation
-      }, 1000); // Simulate loading delay
+      }, 3000); // Simulate loading delay
     } else {
       MySwal.fire({
         title: "Attention",
@@ -37,25 +45,32 @@ const HomePage = () => {
 
   const lionRef = useRef(null);
 
-  const handleMouseMove = (event) => {
+  const handleMove = (event) => {
     const lion = lionRef.current;
+    if (!lion) return;
+
     const eyes = lion.querySelectorAll(".eye");
 
+    // Get mouse or touch coordinates
+    const clientX = event.touches?.[0]?.clientX || event.clientX;
+    const clientY = event.touches?.[0]?.clientY || event.clientY;
+
     const rect = lion.getBoundingClientRect();
-    const x = event.clientX - rect.left - rect.width / 2;
-    const y = event.clientY - rect.top - rect.height / 2;
+    const x = clientX - rect.left - rect.width / 2;
+    const y = clientY - rect.top - rect.height / 2;
 
     eyes.forEach((eye) => {
       eye.style.transform = `translate(${x / 15}px, ${y / 15}px)`;
     });
   };
 
-  const handleMouseLeave = () => {
-    const eyes = lionRef.current.querySelectorAll(".eye");
-    eyes.forEach((eye) => {
-      eye.style.transform = `translate(0, 0)`;
+  const handleLeave = () => {
+    const eyes = lionRef.current?.querySelectorAll(".eye");
+    eyes?.forEach((eye) => {
+      eye.style.transform = "translate(0, 0)";
     });
   };
+
 
   if (loading) {
     return (
@@ -124,8 +139,10 @@ const HomePage = () => {
 
         <button
           className="lion-btn"
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
+          onMouseMove={handleMove}
+          onTouchMove={handleMove} // Add touch support
+          onMouseLeave={handleLeave}
+          onTouchEnd={handleLeave} // Add touch support
           ref={lionRef}
           onClick={handleEnter}
         >
@@ -137,19 +154,7 @@ const HomePage = () => {
           <div className="mouth-text">Enter</div>
         </button>
       </div>
-      <footer className="footer">
-        <p>Copyright © AMGame. All rights reserved.</p>
-        <p>
-          | Made with ❤️ | by{" "}
-          <a
-            href="https://www.linkedin.com/in/ayatmannaa-800585a0/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Ayat Mannaa
-          </a>
-        </p>
-      </footer>
+     <Footer/>
     </div>
   );
 };

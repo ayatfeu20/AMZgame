@@ -158,19 +158,24 @@ const CrosswordGame = () => {
   const [loading, setLoading] = useState(true);
   const [isComplete, setIsComplete] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
+  const [key, setKey] = useState(Date.now());
   const location = useLocation();
   const userName = location?.state?.name || "Player";
+
+  const winningSound = new Audio('/winfantasia-6912.mp3');
 
   useEffect(() => {
     const data = generateCrosswordData();
     setCrosswordData(data);
     setLoading(false);
-  }, []);
+  }, [key]); // Re-run effect when `key` changes
 
-  const handleComplete = (answers) => {
+
+  const handleComplete = () => {
     if (!isComplete) {
       setIsComplete(true);
       setShowConfetti(true);
+      winningSound.play();
 
       Swal.fire({
         title: "Congratulations!,  🎉",
@@ -179,7 +184,8 @@ const CrosswordGame = () => {
         confirmButtonText: "Play Again",
       }).then((result) => {
         if (result.isConfirmed) {
-          window.location.reload(); // Reload only if the user chooses to play again
+          setKey(Date.now()); // Reset the crossword
+          setIsComplete(false);
         }
       });
 
@@ -201,13 +207,14 @@ const CrosswordGame = () => {
     <div className="crossword-game">
       {showConfetti && <Confetti />}
       <div className="header">
-        <Link to="/" className="back-icon">
+        <Link to="/" className="back-icon" onClick={() => setKey(Date.now())}>
           <TiArrowBack size={40} color="#112A46" />
         </Link>
         <h1 className='welcome-text'>Welcome to Crossword, {userName}!</h1>
       </div>
       <div className="crossword-container">
         <Crossword
+          key={key} 
           data={crosswordData}
           onCrosswordComplete={handleComplete}
         />

@@ -15,6 +15,7 @@ const PuzzleGame = () => {
 
   const location = useLocation();
   const userName = location?.state?.name;
+  const winningSound = new Audio('/winfantasia-6912.mp3');
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -29,6 +30,7 @@ const PuzzleGame = () => {
   
   const handleSolved = () => {
     setIsSolved(true);
+    winningSound.play();
 
     MySwal.fire({
       title: "Congratulations! 🎉",

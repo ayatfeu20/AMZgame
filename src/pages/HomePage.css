@@ -3,7 +3,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 0px;
+    margin-top: 20px;
+    
     
     
   }
@@ -267,15 +268,17 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    display: inline-flex;
   }
   
   .lion-image {
-    width: 100%;
+    width: 70%;
     height: auto;
     position: relative;
     z-index: 1;
+    
    
-    margin-left: 70px;
+    
   }
   
   /* Eyes */
@@ -299,24 +302,24 @@
   
   .left-eye {
     position: relative;
-    left: 50px; /* Adjust to align with lion image’s left eye */
+    left: 15px; /* Adjust to align with lion image’s left eye */
   }
   
   .right-eye {
     position: relative;
-    right: -15px; /* Adjust to align with lion image’s right eye */
+    right: 15px; /* Adjust to align with lion image’s right eye */
   }
   
   /* Mouth Text */
   .mouth-text {
     position: absolute;
     bottom: 72px; /* Adjust to align with the lion image's mouth */
-    left: 67%;
-    transform: translateX(-50%);
+    
+    
     color: white;
-    font-weight:200;
+    font-weight:150;
     z-index: 3;
-    font-size: 0.7em;
+    font-size: 0.4em;
     text-wrap:nowrap;
   }
   
@@ -368,11 +371,46 @@
 
 
 /* Responsive Footer Styling */
-@media (max-width: 768px) {
+@media only screen and (min-device-width: 768px) and (max-device-width: 1024px){
   .footer {
     padding: 15px;
     font-size: 12px;
+    margin-top: 150px;
   }
+
+  .name-entry {
+    
+    width: 90%; /* Make the form take more width on smaller devices */
+    height:90%;
+    padding-left: 20px; /* Adjust padding to fit content */
+    padding-right: 20px;
+    font-size: 1.2em; /* Reduce font size to fit */
+    margin-top: 30%;
+
+  }
+
+  .game-selection {
+   /* Stack game icons vertically on smaller devices */
+    gap: 50px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .game-icon {
+    width: 70px; /* Reduce size of game icons */
+    height: 70px;
+  }
+
+  .lion-btn{
+  display:inline-flex;
+  }
+
+  .homepage input {
+   width: 75%; 
+  }
+
+ 
+
 }
 
 @media (max-width: 480px) {
@@ -382,6 +420,10 @@
   .footer-links a {
     padding: 5px 0;
   }
+  .name-entry{
+    margin-top: 20%;
+  }
 }
+
 
   

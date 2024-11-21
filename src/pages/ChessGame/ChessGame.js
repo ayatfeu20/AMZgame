@@ -16,6 +16,8 @@ const ChessGame = () => {
   const [highlightedSquares, setHighlightedSquares] = useState([]);
   const [showConfetti, setShowConfetti] = useState(false);
 
+  const winningSound = new Audio('/winfantasia-6912.mp3');
+
   const location = useLocation();
   const userName = location?.state?.name;
 
@@ -92,6 +94,7 @@ const ChessGame = () => {
 
   const handleGameOver = () => {
     setShowConfetti(true);
+    winningSound.play();
     
     let message = game.isCheckmate()
       ? `${userName} wins!   Congratulations! 🎉`
@@ -158,9 +161,9 @@ const ChessGame = () => {
   onPieceClick={handlePieceClick}
   arePiecesDraggable={isPlayerTurn}
   customSquareStyles={{
-    ...highlightedSquares.reduce((a, square) => ({ 
-      ...a, 
-      [square]: { backgroundColor: 'rgba(255, 255, 0, 0.4)' } 
+    ...highlightedSquares.reduce((a, square) => ({
+      ...a,
+      [square]: { backgroundColor: 'rgba(255, 255, 0, 0.4)' }
     }), {}),
     ...Array.from(Array(64)).reduce((a, _, i) => {
       const square = `${String.fromCharCode(97 + (i % 8))}${8 - Math.floor(i / 8)}`;
@@ -172,8 +175,9 @@ const ChessGame = () => {
       };
     }, {})
   }}
-  boardWidth={window.innerWidth < 900 ? 300 : 500}
+  boardWidth={window.innerWidth < 768 ? 300 : window.innerWidth < 1025 ? 600 : 500} // Set board size for iPad
 />
+
 
         </div>
         </div>
