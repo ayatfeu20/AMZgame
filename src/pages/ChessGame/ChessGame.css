@@ -1,0 +1,160 @@
+.chess-game {
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  background-color: #F5F5F5; 
+
+  
+  
+  
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content:center;
+  gap: 150px;
+  width: 100%;
+  margin-bottom: 20px;
+  color: #112A46;
+}
+
+.back-icon {
+  cursor: pointer;
+  font-size: 1.5em;
+  color: #112A46;
+}
+
+.top-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bottom-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+.chess-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+ 
+  flex-direction: column;
+ 
+}
+
+.chessboard-container {
+  width: 100%;
+  max-width: 500px;
+}
+
+.side-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  
+}
+
+ .captured-pieces {
+  text-align: left;
+  color: #112A46;
+ 
+}
+
+.timer{
+  background-color: #112A46;
+  color: #FCFAF1;
+  padding-top: 10px;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin-bottom: 10px;
+  border-radius: 50%;
+  
+  
+  
+}
+
+
+.captured-pieces {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  color: #112A46;
+  margin-top: 20px;
+}
+
+.piece-icon {
+  margin: 5px;
+}
+
+
+/* Customize individual piece icons */
+.piece-p::before { content: '♙'; }
+.piece-r::before { content: '♖'; }
+.piece-n::before { content: '♘'; }
+.piece-b::before { content: '♗'; }
+.piece-q::before { content: '♕'; }
+.piece-k::before { content: '♔'; }
+
+.restart-btn {
+  padding: 8px 16px;
+  font-size: 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #FCFAF1;
+  border: 1px solid #a3a29d;
+  text-align: center;
+  color: #112A46;
+}
+
+.restart-btn:hover{
+  background-color: #112A46;
+  color: #FCFAF1;
+}
+@media (max-width: 600px) {
+  .chess-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header{
+    gap: 20px;
+  }
+}
+
+.turn-indicator {
+  font-size: 1.2em;
+  color: #112A46;
+  font-weight: bold;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+.turn-indicator p {
+  margin: 0;
+  padding: 5px 10px;
+  background-color: #FCFAF1;
+  border-radius: 5px;
+}
+.turn-indicator p:nth-child(1) {
+  text-align: center;
+}
+
+
+/* Adjust layout for larger screens */
+@media (min-width: 601px) {
+  .chess-container {
+    flex-direction: row; /* Side-by-side layout on larger screens */
+    justify-content: center;
+  }
+  .top-section, .bottom-section {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+

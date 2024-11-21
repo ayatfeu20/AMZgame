@@ -1,0 +1,387 @@
+/* HomePage.css */
+.homepage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0px;
+    
+    
+  }
+  
+  input, select, .enter-button {
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+ 
+  .animated-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: linear-gradient(to right, #ffefba, #ffffff);
+  }
+  
+  /* Full-screen animated background */
+  .animated-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    background: linear-gradient(to right, #ffefba, #ffffff);
+  }
+  
+  /* Basic styling for all puzzle pieces */
+  .puzzle-piece {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    opacity: 0.3;
+    animation: movePuzzlePiece 12s linear infinite;
+  }
+  
+  /* Different background images for each piece */
+  .puzzle-piece.piece1 {
+    background: url('./images/puzzle1.png') no-repeat center/contain;
+  }
+  
+  .puzzle-piece.piece2 {
+    background: url('./images/puzzle2.png') no-repeat center/contain;
+  }
+  
+  .puzzle-piece.piece3 {
+    background: url('./images/puzzle3.png') no-repeat center/contain;
+  }
+  
+  .puzzle-piece.piece4 {
+    background: url('./images/puzzle4.png') no-repeat center/contain;
+  }
+  
+  .puzzle-piece.piece5 {
+    background: url('./images/puzzle5.png') no-repeat center/contain;
+  }
+  
+  .puzzle-piece.piece6 {
+    background: url('./images/puzzle6.png') no-repeat center/contain;
+  }
+
+  .puzzle-piece.piece7 {
+    background: url('./images/puzzle7.png') no-repeat center/contain;
+  }
+
+  .puzzle-piece.piece8 {
+    background: url('./images/puzzle8.png') no-repeat center/contain;
+  }
+
+  .puzzle-piece.piece9 {
+    background: url('./images/puzzle9.png') no-repeat center/contain;
+  }
+  /* Different animation timing and delays for each piece */
+  .puzzle-piece.piece1 {
+    top: 10%;
+    left: 5%;
+    animation-duration: 14s;
+    animation-delay: 0s;
+  }
+  
+  .puzzle-piece.piece2 {
+    top: 30%;
+    left: 15%;
+    animation-duration: 16s;
+    animation-delay: 2s;
+  }
+  
+  .puzzle-piece.piece3 {
+    top: 50%;
+    left: 70%;
+    animation-duration: 18s;
+    animation-delay: 4s;
+  }
+  
+  .puzzle-piece.piece4 {
+    top: 80%;
+    left: 70%;
+    animation-duration: 20s;
+    animation-delay: 6s;
+  }
+  
+  .puzzle-piece.piece5 {
+    top: 60%;
+    left: 90%;
+    animation-duration: 14s;
+    animation-delay: 5s;
+  }
+
+  .puzzle-piece.piece8 {
+    top: 20%;
+    left: 80%;
+    animation-duration: 14s;
+    animation-delay: 5s;
+  }
+
+  .puzzle-piece.piece9 {
+    top: 40%;
+    left: 80%;
+    animation-duration: 14s;
+    animation-delay: 5s;
+  }
+
+  .puzzle-piece.piece6 {
+    top: 70%;
+    left: 20%;
+    animation-duration: 14s;
+    animation-delay: 5s;
+  }
+
+  .puzzle-piece.piece7 {
+    top: 60%;
+    left: 10%;
+    animation-duration: 14s;
+    animation-delay: 5s;
+  }
+  
+  /* Keyframe animation for floating effect */
+  @keyframes movePuzzlePiece {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+      transform: translate(20px, -20px) rotate(20deg);
+    }
+    50% {
+      transform: translate(-20px, 20px) rotate(-20deg);
+    }
+    75% {
+      transform: translate(30px, -30px) rotate(15deg);
+    }
+    100% {
+      transform: translate(0, 0) rotate(0deg);
+  }
+  }
+  
+  /* Style for name entry form */
+  .name-entry {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding-left: 50px;
+    padding-right: 50px;
+    background: rgba(255, 255, 255, 0.8);
+    border-bottom-right-radius: 15%;
+    border-top-left-radius: 15%;
+    margin: 2px;
+    width: 380px;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family: cursive;
+  }
+  
+  .name-entry h2 {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .name-entry input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    font-size: 16px;
+  }
+  
+   
+.game-selection {
+    display: flex;
+    gap: 20px; /* Space between icons */
+    margin-top: 5px;
+    
+  }
+  
+  .game-icon {
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  /* Hover effect with animated border */
+  .game-icon:hover {
+    transform: scale(1.1);
+  }
+  
+  .game-icon::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    background-image: linear-gradient(45deg, #ff8c00, #1e90ff);
+    background-size: 200% 200%;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  
+  .game-icon:hover::before {
+    opacity: 1;
+    animation: borderMove 1.5s linear infinite;
+  }
+  
+  @keyframes borderMove {
+    0% {
+      background-position: 0% 50%;
+    }
+    100% {
+      background-position: 100% 50%;
+    }
+  }
+  
+  .game-icon img {
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+  }
+/* Main button styling */
+.lion-btn {
+    position: relative;
+    width: 200px; /* Adjust size as needed */
+    height: 200px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  
+  .lion-image {
+    width: 100%;
+    height: auto;
+    position: relative;
+    z-index: 1;
+   
+    margin-left: 70px;
+  }
+  
+  /* Eyes */
+  .eyes {
+    position: absolute;
+    top: 39%; /* Adjust position relative to the lion image */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    gap: 50px;
+  }
+  
+  .eye {
+    width: 10px;
+    height: 10px;
+    background-color: #333;
+    border-radius: 50%;
+    transition: transform 0.1s ease;
+  }
+  
+  .left-eye {
+    position: relative;
+    left: 50px; /* Adjust to align with lion image’s left eye */
+  }
+  
+  .right-eye {
+    position: relative;
+    right: -15px; /* Adjust to align with lion image’s right eye */
+  }
+  
+  /* Mouth Text */
+  .mouth-text {
+    position: absolute;
+    bottom: 72px; /* Adjust to align with the lion image's mouth */
+    left: 67%;
+    transform: translateX(-50%);
+    color: white;
+    font-weight:200;
+    z-index: 3;
+    font-size: 0.7em;
+    text-wrap:nowrap;
+  }
+  
+  /* Basic Footer Styling */
+.footer {
+  
+  color: #333; /* White text color */
+  text-align: center;
+  padding: 0px;
+  margin-top: 2px;
+  font-size: 14px;
+}
+
+.footer p {
+  margin: 0;
+  padding: 2px 0;
+}
+
+.footer-links {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  padding-top: 10px;
+}
+
+.loading-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f9fafb;
+}
+
+.loading-screen .font{
+  
+  color: #7f8182;
+  text-align: center;
+  
+  font-family:cursive;
+  font-weight: bold;
+}
+.loading-screen img {
+  width: 75px;
+  height: 75px;
+  margin-bottom: 20px;
+}
+
+
+
+/* Responsive Footer Styling */
+@media (max-width: 768px) {
+  .footer {
+    padding: 15px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-links {
+    flex-direction: column;
+  }
+  .footer-links a {
+    padding: 5px 0;
+  }
+}
+
+  
