@@ -171,15 +171,11 @@ const CrosswordGame = () => {
     setLoading(false);
   }, [key]); // Re-run effect when `key` changes
 
-  const resetCrossword = () => {
-    setKey(Date.now()); // Change key to force reset
-    setCrosswordData(null); // Clear current crossword data
-    setLoading(true); // Show loading while resetting
-    setTimeout(() => {
-      const newData = generateCrosswordData(); // Generate new crossword
-      setCrosswordData(newData);
-      setLoading(false);
-    }, 100); // Slight delay to ensure state reset
+  const resetGame = () => {
+    setIsComplete(false);
+    setShowConfetti(false);
+    setCrosswordData(generateCrosswordData());
+    setKey(Date.now()); // Force the component to re-render
   };
 
 
@@ -196,7 +192,7 @@ const CrosswordGame = () => {
         confirmButtonText: "Play Again",
       }).then((result) => {
         if (result.isConfirmed) {
-          resetCrossword(); // Reset the crossword
+          resetGame();
           setIsComplete(false);
         }
       });
@@ -220,7 +216,7 @@ const CrosswordGame = () => {
     <div className="crossword-game">
       {showConfetti && <Confetti />}
       <div className="header">
-        <Link to="/" className="back-icon" onClick={resetCrossword}>
+        <Link to="/" className="back-icon" onClick={resetGame}>
           <TiArrowBack size={40} color="#112A46" />
         </Link>
         <h1 className='welcome-text'>Welcome to Crossword, {userName}!</h1>
