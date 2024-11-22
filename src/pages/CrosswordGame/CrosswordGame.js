@@ -154,7 +154,7 @@ function generateCrosswordData() {
 }
 
 const CrosswordGame = () => {
-  const [crosswordData, setCrosswordData] = useState("");
+  const [crosswordData, setCrosswordData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isComplete, setIsComplete] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
@@ -171,6 +171,17 @@ const CrosswordGame = () => {
     setLoading(false);
   }, [key]); // Re-run effect when `key` changes
 
+  const resetCrossword = () => {
+    setKey(Date.now()); // Change key to force reset
+    setCrosswordData(null); // Clear current crossword data
+    setLoading(true); // Show loading while resetting
+    setTimeout(() => {
+      const newData = generateCrosswordData(); // Generate new crossword
+      setCrosswordData(newData);
+      setLoading(false);
+    }, 100); // Slight delay to ensure state reset
+  };
+
 
   const handleComplete = () => {
     if (!isComplete) {
@@ -185,7 +196,7 @@ const CrosswordGame = () => {
         confirmButtonText: "Play Again",
       }).then((result) => {
         if (result.isConfirmed) {
-          setKey(Date.now()); // Reset the crossword
+          resetCrossword(); // Reset the crossword
           setIsComplete(false);
         }
       });
@@ -209,7 +220,7 @@ const CrosswordGame = () => {
     <div className="crossword-game">
       {showConfetti && <Confetti />}
       <div className="header">
-        <Link to="/" className="back-icon" onClick={() => setKey(Date.now())}>
+        <Link to="/" className="back-icon" onClick={resetCrossword}>
           <TiArrowBack size={40} color="#112A46" />
         </Link>
         <h1 className='welcome-text'>Welcome to Crossword, {userName}!</h1>
