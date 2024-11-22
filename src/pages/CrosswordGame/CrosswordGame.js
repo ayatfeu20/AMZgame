@@ -166,6 +166,7 @@ const CrosswordGame = () => {
 
   useEffect(() => {
     const data = generateCrosswordData();
+    setKey(Date.now());
     setCrosswordData(data);
     setLoading(false);
   }, [key]); // Re-run effect when `key` changes
@@ -199,7 +200,7 @@ const CrosswordGame = () => {
     return (
       <div className="loading-screen">
         <h1>Loading Crossword...</h1>
-        setKey(Date.now());
+       
       </div>
     );
   }
