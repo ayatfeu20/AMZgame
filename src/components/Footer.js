@@ -6,7 +6,7 @@ export default function
   return (
     <div>
       <footer className="footer">
-        <p>Copyright © AMGame. All rights reserved.</p>
+        <p>Copyright © AZMGame. All rights reserved.</p>
         <p>
           | Made with ❤️ | by{" "}
           <a
