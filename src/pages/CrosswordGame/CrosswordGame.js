@@ -175,7 +175,8 @@ const CrosswordGame = () => {
     setIsComplete(false);
     setShowConfetti(false);
     setCrosswordData(generateCrosswordData());
-    setKey(Date.now()); // Force the component to re-render
+    setKey(Date.now()); 
+    window.location.reload()// Force the component to re-render
   };
 
 
