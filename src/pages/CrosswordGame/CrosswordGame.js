@@ -199,6 +199,7 @@ const CrosswordGame = () => {
     return (
       <div className="loading-screen">
         <h1>Loading Crossword...</h1>
+        setKey(Date.now());
       </div>
     );
   }
