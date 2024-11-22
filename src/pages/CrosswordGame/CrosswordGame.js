@@ -154,7 +154,7 @@ function generateCrosswordData() {
 }
 
 const CrosswordGame = () => {
-  const [crosswordData, setCrosswordData] = useState(null);
+  const [crosswordData, setCrosswordData] = useState("");
   const [loading, setLoading] = useState(true);
   const [isComplete, setIsComplete] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
