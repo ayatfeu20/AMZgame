@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Crossword from "@jaredreisinger/react-crossword";
 import { useLocation, Link } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -90,7 +90,57 @@ const wordCluesPool = [
                 { word: "han", clue: "He in Swedish language" },
                 { word: "vi", clue: "We in Swedish language" },
                 { word: "de", clue: "They in Swedish language" },
-
+                { word: "eagle", clue: "A bird of prey with sharp talons"},
+                { word: "tiger", clue:" A large cat with orange and black stripes"},
+                { word: "shark", clue:" A powerful predator of the ocean"},
+                { word: "zebra", clue:" A striped animal found in Africa"},
+                { word :"camel", clue:" A desert animal with humps"},
+                { word: "rabbit", clue: " A small animal with long ears"},
+                { word: "penguin", clue: " A flightless bird that lives in cold regions"},
+                { word: "mountain" , clue:" A high landform that rises above the surrounding terrain"},
+                { word: "desert", clue:" A dry, sandy region with little rainfall"},
+                { word: "river" , clue: " A natural flowing watercourse"},
+                { word: "volcano" , clue:" A mountain that erupts with lava"},
+                { word: "island" , clue:" Land surrounded by water"},
+                { word: "forest", clue: " A large area covered with trees"},
+                { word: "ocean", clue: " A vast body of saltwater"},
+                { word: "red" , clue: " The color of strawberries"},
+                { word: "green", clue: " The color of grass"},
+                { word: "blue", clue: " The color of the sky on a clear day"},
+                { word: "purple", clue: " The color of some flowers and grapes"},
+                { word: "black", clue:" The absence of light or color"},
+                { word: "white", clue: " The color of snow"},
+                { word: "pencil", clue:" A tool for writing or drawing"},
+                { word: "mirror", clue: " Reflects your image"},
+                { word: "clock", clue: " Tells the time"},
+                { word: "guitar", clue: " A stringed musical instrument"},
+                { word: "umbrella", clue: " Protects you from rain"},
+                { word: "camera", clue: " Captures photos"},
+                { word: "helmet", clue: " Protects your head"},
+                { word: "pizza" , clue: " A popular Italian dish with cheese and toppings"},
+                { word: "salad", clue: " A mix of vegetables or fruits"},
+                { word: "burger", clue: " A sandwich with a patty, often made of beef"},
+                { word: "cheese", clue: " A dairy product made from milk"},
+                { word: "cereal", clue: " A common breakfast food"},
+                { word: "chocolate", clue: " A sweet treat made from cocoa"},
+                { word: "city", clue: " A large urban area with many people"},
+                { word: "city", clue: " A large urban area with many people"},
+                { word: "castle", clue: " A large building where kings and queens lived"},
+                { word: "library", clue: " A place to borrow books"},
+                { word: "school", clue: " A place where people learn"},
+                { word: "park", clue: " A public area with trees and grass"},
+                { word: "jump", clue: " To leap into the air"},
+                { word: "dance", clue:" To move rhythmically to music"},
+                { word: "read", clue: " To look at written words and understand them"},
+                { word: "write", clue: " To create words or symbols on paper"},
+                { word: "run", clue:" To move quickly on foot"},
+                { word: "sing", clue: " To produce musical sounds with your voice"},
+                { word: "laptop", clue: " A portable computer"},
+                { word: "tablet", clue: " A flat, portable touchscreen computer"},
+                { word: "router", clue: " Connects devices to the internet"},
+                { word: "keyboard", clue: " Used to type on a computer"},
+                { word: "smartphone", clue: " A mobile device with many functions"},
+                { word: "drone", clue:" A flying machine controlled remotely"},
                 
                           
             
@@ -103,129 +153,157 @@ const wordCluesPool = [
   
 ];
 
-// Function to randomly select words and generate crossword data
 function generateCrosswordData() {
-  const gridSize = 10;
+  const gridSize = 10; // Define grid size
   const data = { across: {}, down: {} };
   const usedPositions = new Set();
 
+  // Helper to get random subset from the word pool
+  function getRandomWords(pool, count) {
+    const shuffled = [...pool].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  }
+
+  // Randomly pick words for across and down
+  const selectedWords = getRandomWords(wordCluesPool, 30); // 15 across + 15 down
+  const acrossWords = selectedWords.slice(0, 15);
+  const downWords = selectedWords.slice(15);
+
   let clueNumber = 1;
 
-  wordCluesPool.forEach(({ word, clue }) => {
-    const direction = Math.random() > 0.5 ? "across" : "down";
-    const maxStart = gridSize - word.length;
+  // Function to place words in the grid
+  function placeWords(words, direction) {
+    words.forEach(({ word, clue }) => {
+      const maxStart = gridSize - word.length;
+      let row, col;
+      let attempts = 0;
 
-    let row, col;
-    let attempts = 0;
+      do {
+        row = Math.floor(Math.random() * (direction === "across" ? gridSize : maxStart));
+        col = Math.floor(Math.random() * (direction === "down" ? gridSize : maxStart));
+        attempts++;
+      } while (
+        attempts < 50 &&
+        word.split("").some((_, i) =>
+          direction === "across"
+            ? usedPositions.has(`${row},${col + i}`)
+            : usedPositions.has(`${row + i},${col}`)
+        )
+      );
 
-    do {
-      row = Math.floor(Math.random() * (direction === "across" ? gridSize : maxStart));
-      col = Math.floor(Math.random() * (direction === "down" ? gridSize : maxStart));
-      attempts++;
-    } while (
-      attempts < 50 &&
-      word.split("").some((_, i) =>
-        direction === "across"
-          ? usedPositions.has(`${row},${col + i}`)
-          : usedPositions.has(`${row + i},${col}`)
-      )
-    );
+      if (attempts === 50) {
+        return; // Skip this word if placement fails
+      }
 
-    if (attempts === 50) {
-      return; // Skip this word if placement fails
-    }
+      word.split("").forEach((_, i) => {
+        const position = direction === "across" ? `${row},${col + i}` : `${row + i},${col}`;
+        usedPositions.add(position);
+      });
 
-    // Place the word and store the positions
-    word.split("").forEach((_, i) => {
-      const position = direction === "across" ? `${row},${col + i}` : `${row + i},${col}`;
-      usedPositions.add(position);
+      // Add word to the crossword data
+      data[direction][clueNumber] = { clue, answer: word.toUpperCase(), row, col };
+      clueNumber++;
     });
+  }
 
-    // Add to crossword data
-    if (direction === "across") {
-      data.across[clueNumber] = { clue, answer: word.toUpperCase(), row, col };
-    } else {
-      data.down[clueNumber] = { clue, answer: word.toUpperCase(), row, col };
-    }
-    clueNumber++;
-  });
+  placeWords(acrossWords, "across");
+  placeWords(downWords, "down");
 
   return data;
 }
 
+
 const CrosswordGame = () => {
-  const [crosswordData, setCrosswordData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [crosswordData, setCrosswordData] = useState(generateCrosswordData());
+  const [userAnswers, setUserAnswers] = useState({}); // Track user inputs
+  const [key, setKey] = useState(0); // Force remount
   const [isComplete, setIsComplete] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-  const [key, setKey] = useState(Date.now());
+
   const location = useLocation();
   const userName = location?.state?.name || "Player";
-
   const winningSound = new Audio('/winfantasia-6912.mp3');
 
   useEffect(() => {
-    const data = generateCrosswordData();
-    
-    setCrosswordData(data);
-    setLoading(false);
-  }, [key]); // Re-run effect when `key` changes
+    localStorage.clear(); // Clear crossword state on load
+  }, []);
 
   const resetGame = () => {
     setIsComplete(false);
     setShowConfetti(false);
+    setUserAnswers({});
     setCrosswordData(generateCrosswordData());
-    setKey(Date.now()); 
-    window.location.reload()// Force the component to re-render
+    setKey((prevKey) => prevKey + 1); // Force remount
   };
 
+  const handleAnswerChange = (direction, number, correct, answer) => {
+    // Track user input in a structured object
+    setUserAnswers((prev) => ({
+      ...prev,
+      [`${direction}-${number}`]: { correct, answer: answer.toUpperCase() },
+    }));
+  };
 
   const handleComplete = () => {
-    if (!isComplete) {
-      setIsComplete(true);
-      setShowConfetti(true);
-      winningSound.play();
-
-      Swal.fire({
-        title: "Congratulations!,  🎉",
-        text: "You solved the crossword!",
-        icon: "success",
-        confirmButtonText: "Play Again",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          resetGame();
-          setIsComplete(false);
-        }
+    const allAnswersCorrect = Object.keys(crosswordData).every((dir) => {
+      const dirData = crosswordData[dir];
+      return Object.keys(dirData).every((key) => {
+        const correctAnswer = dirData[key].answer;
+        const userAnswer = userAnswers[`${dir}-${key}`]?.answer;
+        return correctAnswer === userAnswer;
       });
+    });
 
-      setTimeout(() => {
-        setShowConfetti(false); // Stop confetti after a few seconds
-      }, 8000);
+    if (allAnswersCorrect) {
+      if (!isComplete) {
+        setIsComplete(true);
+        setShowConfetti(true);
+        winningSound.play();
+
+        Swal.fire({
+          title: "Congratulations! 🎉",
+          text: "You solved the crossword!",
+          icon: "success",
+          confirmButtonText: "Play Again",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            resetGame();
+          }
+        });
+
+        setTimeout(() => {
+          setShowConfetti(false);
+        }, 8000);
+      }
+    } else {
+      Swal.fire({
+        title: "Not Yet!",
+        text: "Some answers are incorrect. Keep trying!",
+        icon: "error",
+        confirmButtonText: "Continue",
+      });
     }
   };
-
-  if (loading) {
-    return (
-      <div className="loading-screen">
-        <h1>Loading Crossword...</h1>
-       
-      </div>
-    );
-  }
 
   return (
     <div className="crossword-game">
       {showConfetti && <Confetti />}
       <div className="header">
-        <Link to="/" className="back-icon" onClick={resetGame}>
+        <Link to="/" className="back-icon">
           <TiArrowBack size={40} color="#112A46" />
         </Link>
-        <h1 className='welcome-text'>Welcome to Crossword, {userName}!</h1>
+        <h1 className="welcome-text">Welcome to Crossword, {userName}!</h1>
+      </div>
+      <div className="button-container">
+        <button className="newgame-btn" onClick={resetGame}>
+          New Game
+        </button>
       </div>
       <div className="crossword-container">
         <Crossword
-          key={key} 
+          key={key}
           data={crosswordData}
+          onAnswerChange={handleAnswerChange}
           onCrosswordComplete={handleComplete}
         />
       </div>
