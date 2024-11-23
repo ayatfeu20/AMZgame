@@ -215,11 +215,11 @@ function generateCrosswordData() {
 
 const CrosswordGame = () => {
   const [crosswordData, setCrosswordData] = useState(generateCrosswordData());
-  const [userAnswers, setUserAnswers] = useState({}); // Track user inputs
-  const [key, setKey] = useState(0); // Force remount
+  const [userAnswers, setUserAnswers] = useState({});
+  const [key, setKey] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
-
+  const crosswordRef = useRef(null); // Ref for accessing crossword instance
   const location = useLocation();
   const userName = location?.state?.name || "Player";
   const winningSound = new Audio('/winfantasia-6912.mp3');
@@ -233,7 +233,11 @@ const CrosswordGame = () => {
     setShowConfetti(false);
     setUserAnswers({});
     setCrosswordData(generateCrosswordData());
-    setKey((prevKey) => prevKey + 1); // Force remount
+    setKey((prevKey) => prevKey + 1); // Force remount by changing key
+
+    if (crosswordRef.current) {
+      crosswordRef.current.reset(); // Explicitly reset crossword state
+    }
   };
 
   const handleAnswerChange = (direction, number, correct, answer) => {
@@ -302,6 +306,7 @@ const CrosswordGame = () => {
       <div className="crossword-container">
         <Crossword
           key={key}
+          ref={crosswordRef} // Attach ref to access methods
           data={crosswordData}
           onAnswerChange={handleAnswerChange}
           onCrosswordComplete={handleComplete}
