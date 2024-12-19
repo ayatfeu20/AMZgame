@@ -110,6 +110,7 @@
   cursor: pointer;
   background-color: #E4F70A;
   border: 1px solid #e1f503;
+  align-items: center;
 }
 
 .choice-section .btn:hover{
