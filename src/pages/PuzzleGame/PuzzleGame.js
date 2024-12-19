@@ -10,24 +10,46 @@ import './PuzzleGame.css';
 
 const PuzzleGame = () => {
   const [uploadedImage, setUploadedImage] = useState(null);
+  const [randomImage, setRandomImage] = useState(null);
+  const [useRandomImage, setUseRandomImage] = useState(false);
   const [isSolved, setIsSolved] = useState(false);
-  const [gridSize, setGridSize] = useState({ rows: 3, columns: 3 }); // Default to Easy
+  const [gridSize, setGridSize] = useState({ rows: 3, columns: 3 });
+  const [loading, setLoading] = useState(false);
 
   const location = useLocation();
   const userName = location?.state?.name;
   const winningSound = new Audio('/winfantasia-6912.mp3');
+
+  const UNSPLASH_API_KEY = process.env.REACT_APP_UNSPLASH_ACCESS_KEY;
+  const UNSPLASH_API_URL = `https://api.unsplash.com/photos/random?query=puzzle&orientation=squarish&client_id=${UNSPLASH_API_KEY}`;
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       const url = URL.createObjectURL(file);
       setUploadedImage(url);
+      setUseRandomImage(false); // Ensure we're using uploaded image
       setIsSolved(false); // Reset puzzle state
     }
   };
 
+  const fetchRandomImage = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(UNSPLASH_API_URL);
+      const data = await response.json();
+      setRandomImage(data.urls.regular);
+      setUseRandomImage(true);
+    } catch (error) {
+      console.error("Error fetching random image:", error);
+      Swal.fire("Error", "Failed to fetch random image. Try again later.", "error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const MySwal = withReactContent(Swal);
-  
+
   const handleSolved = () => {
     setIsSolved(true);
     winningSound.play();
@@ -46,7 +68,6 @@ const PuzzleGame = () => {
     });
   };
 
-  // Set the grid size based on difficulty selection
   const handleDifficulty = (difficulty) => {
     if (difficulty === 'easy') {
       setGridSize({ rows: 3, columns: 3 });
@@ -68,13 +89,23 @@ const PuzzleGame = () => {
         <h2 className='welcome-text'>Welcome to AZMpuzzle, {userName}!</h2>
       </div>
 
-      {/* Image Upload Section with Label */}
-      <div className="upload-section">
-        <p className="upload-label">
-          Please upload an image to start the puzzle:</p>
-          <input type="file" onChange={handleFileChange} />
-        
+      {/* User Choice Section */}
+      <div className="choice-section">
+        <button onClick={() => setUseRandomImage(false)} className={`btn ${!useRandomImage ? 'active' : ''}`}>
+          Upload Image
+        </button>
+        <button onClick={fetchRandomImage} className={`btn ${useRandomImage ? 'active' : ''}`}>
+          Random Image
+        </button>
       </div>
+
+      {/* Image Upload Section */}
+      {!useRandomImage && (
+        <div className="upload-section">
+          <p className="upload-label">Please upload an image to start the puzzle:</p>
+          <input type="file" onChange={handleFileChange} />
+        </div>
+      )}
 
       {/* Difficulty Selection Buttons */}
       <div className="difficulty-buttons">
@@ -83,24 +114,25 @@ const PuzzleGame = () => {
         <button onClick={() => handleDifficulty('hard')} className="btn hard-btn">Hard (6x6)</button>
       </div>
 
-      {/* Display Uploaded Image and Puzzle */}
-      {uploadedImage ? (
+      {/* Loading State */}
+      {loading && <p className="loading-text">Loading random image...</p>}
+
+      {/* Display Image and Puzzle */}
+      {((useRandomImage && randomImage) || uploadedImage) && !loading && (
         <div className="puzzle-container">
           <div className="original-image">
-            <img src={uploadedImage} alt="Uploaded" />
+            <img src={useRandomImage ? randomImage : uploadedImage} alt="Puzzle Source" />
           </div>
-        
+
           <div className="puzzle-board">
             <JigsawPuzzle
-              imageSrc={uploadedImage}
+              imageSrc={useRandomImage ? randomImage : uploadedImage}
               rows={gridSize.rows}
               columns={gridSize.columns}
               onSolved={handleSolved}
             />
           </div>
         </div>
-      ) : (
-        <p></p>
       )}
 
       {/* Celebration and Try Again Button */}

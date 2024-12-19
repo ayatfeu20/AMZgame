@@ -111,30 +111,30 @@ const HomePage = () => {
 
         <h5 className="pt-4">What do you like to play?</h5>
         <div className="game-selection">
-          <div className="border border-danger rounded bg-danger">
+          <button className="border  rounded ">
             <img
               src={puzzleIcon}
               alt="Puzzle"
-              className={`game-icon ${selectedGame === "puzzle" ? "selected" : ""}`}
+              className={`game-icon ${selectedGame === "puzzle" ? "selected" : ""} bg-danger`}
               onClick={() => setSelectedGame("puzzle")}
             />
-          </div>
-          <div className="border border-warning rounded bg-warning">
+          </button>
+          <button className="border  rounded">
             <img
               src={chessIcon}
               alt="Chess"
-              className={`game-icon ${selectedGame === "chess" ? "selected" : ""}`}
+              className={`game-icon ${selectedGame === "chess" ? "selected" : ""} bg-warning`}
               onClick={() => setSelectedGame("chess")}
             />
-          </div>
-          <div className="border border-success rounded bg-success">
+          </button>
+          <button className="border  rounded ">
             <img
               src={crosswordIcon}
               alt="Crossword"
-              className={`game-icon ${selectedGame === "crossword" ? "selected" : ""}`}
+              className={`game-icon ${selectedGame === "crossword" ? "selected" : ""} bg-success`}
               onClick={() => setSelectedGame("crossword")}
             />
-          </div>
+          </button>
         </div>
 
         <button

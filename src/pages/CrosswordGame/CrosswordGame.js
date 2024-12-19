@@ -293,7 +293,7 @@ const CrosswordGame = () => {
     <div className="crossword-game">
       {showConfetti && <Confetti />}
       <div className="header">
-        <Link to="/" className="back-icon">
+        <Link to="/" className="back-icon" >
           <TiArrowBack size={40} color="#112A46" />
         </Link>
         <h1 className="welcome-text">Welcome to Crossword, {userName}!</h1>
